@@ -36,4 +36,4 @@ def ip2region(ip=None):
 
 
 if __name__ == '__main__':
-    print ip2region('223.5.5.5')['region']
+    print ip2region('103.231.166.83')
