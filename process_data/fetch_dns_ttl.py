@@ -16,7 +16,7 @@ from pandas import Series
 
 timeout = 5   # 超时时间
 # server = '222.194.15.253'
-target_col = 'domain_ttl_new'
+target_col = 'mal_dns_ttl'
 col = get_col(target_col)
 
 ## 全局变量
@@ -128,16 +128,13 @@ def insert_data(check_domain,cnames,cnames_ttl,ips,ips_ttl,ns,ns_ttl,mal_type):
     rc_data = {
         'domain': check_domain,
         'mal_type': mal_type,
-        'data':
-            {
-                "cnames": cnames,
-                "cnames_ttl": cnames_ttl,
-                'ips': ips,
-                'ips_ttl': ips_ttl,
-                "ns":ns,
-                "ns_ttl":ns_ttl,
-                'insert_time': insert_time
-            }
+        "cnames": cnames,
+        "cnames_ttl": cnames_ttl,
+        'ips': ips,
+        'ips_ttl': ips_ttl,
+        "ns":ns,
+        "ns_ttl":ns_ttl,
+        'insert_time': insert_time
     }
     col.insert(rc_data)
 
@@ -147,7 +144,7 @@ def fetch_mal_domains():
     获取待查询的域名列表
     """
     col = get_col(target_col)
-    mal_domains = col.find({}, {'_id': 0, 'domain': 1,'typ':1})  # 赌博网站
+    mal_domains = col.find({}, {'_id': 0, 'domain': 1})  # 赌博网站
     return [ i['domain'] for i in mal_domains]
 
 
@@ -157,7 +154,7 @@ def fetch_mal_domains_from_file():
     """
     mal_domains = []
     mal_type = []
-    fp = open('mal_domains.txt','r')
+    fp = open('mal_domains1.txt','r')
     db_mal_domains = fetch_mal_domains()
     fp_lines = fp.readlines()
     for i in fp_lines:
@@ -198,6 +195,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()
-    # fetch_mal_domains_from_file()
