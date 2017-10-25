@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 """
-使用内部DNS服务器获取域名IP、CNAME和对应的TTL时间
+使用内部DNS服务器获取域名IP、CNAME、NS和对应的TTL时间
 从根域名向下进行查询
 作者：程亚楠
 时间：2017.8.25
@@ -12,6 +12,7 @@ import random
 import tldextract
 from datetime import datetime
 from db_manage import get_col
+from pandas import Series
 
 timeout = 5   # 超时时间
 # server = '222.194.15.253'
@@ -155,27 +156,28 @@ def fetch_mal_domains_from_file():
     从文件中获取待查询的域名数据
     """
     mal_domains = []
+    mal_type = []
     fp = open('mal_domains.txt','r')
     db_mal_domains = fetch_mal_domains()
     fp_lines = fp.readlines()
     for i in fp_lines:
         domain_type = i.strip().split('\t')
-        # domain_type = [i.strip(),'1']
-        if domain_type[0] in db_mal_domains:
-            continue
-        else:
-            mal_domains.append((domain_type[0],domain_type[1]))
+        mal_domains.append(domain_type[0])
+        mal_type.append(domain_type[1])
 
-    return mal_domains
+    domain_series = Series(mal_type,index=mal_domains)
+    un_detected_domains = list(set(mal_domains)-set(db_mal_domains))
+    domain_series = domain_series[un_detected_domains]
+    return domain_series
 
 
 def main():
 
     global g_cnames, g_cnames_ttl, g_ips, g_ips_ttl,g_ns,g_ns_ttl
     mal_domains = fetch_mal_domains_from_file()
-    domain_total = len(mal_domains)
+    domain_total = mal_domains.size
 
-    for check_domain,mal_type in mal_domains:
+    for check_domain,mal_type in mal_domains.iteritems():
         print domain_total
         domain_total -= 1
         g_cnames, g_cnames_ttl, g_ips, g_ips_ttl,g_ns,g_ns_ttl = [], [], [], [],[],[]  # 初始化
@@ -198,3 +200,4 @@ def main():
 if __name__ == '__main__':
 
     main()
+    # fetch_mal_domains_from_file()
