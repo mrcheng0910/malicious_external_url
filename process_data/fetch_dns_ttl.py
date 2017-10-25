@@ -125,6 +125,8 @@ def insert_data(check_domain,cnames,cnames_ttl,ips,ips_ttl,ns,ns_ttl,mal_type):
     """
     insert_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     rc_data = {
+        'domain': check_domain,
+        'mal_type': mal_type,
         'data':
             {
                 "cnames": cnames,
@@ -136,36 +138,7 @@ def insert_data(check_domain,cnames,cnames_ttl,ips,ips_ttl,ns,ns_ttl,mal_type):
                 'insert_time': insert_time
             }
     }
-
-    result = col.update(
-        {
-            "domain": check_domain,
-        },
-        {
-            "$setOnInsert": {
-                "mal_type": mal_type,
-                'data': [
-                    {
-
-                        "cnames": cnames,
-                        "cnames_ttl": cnames_ttl,
-                        'ips': ips,
-                        'ips_ttl': ips_ttl,
-                        'ns': ns,
-                        'ns_ttl': ns_ttl,
-                        'insert_time': insert_time
-                    }
-                ]
-            }
-        },
-        True
-    )
-    # print result['updatedExisting']  # 是否更新返回标记位,True表示存在，False表示不存在
-    # if result['updatedExisting']:
-    #     col.update(
-    #         {'domain': check_domain},
-    #         {"$push": rc_data}
-    #     )
+    col.insert(rc_data)
 
 
 def fetch_mal_domains():
