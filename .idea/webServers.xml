@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="8ba0b372-1b59-458b-949f-095f40549a41" name="172.29.152.152" url="http://172.29.152.152">
-        <fileTransfer host="172.29.152.152" port="22" rootFolder="/home/nslabdns" accessType="SFTP">
+        <fileTransfer host="172.29.152.152" port="22" rootFolder="/home/nslabdns/" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

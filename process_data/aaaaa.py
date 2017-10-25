@@ -164,13 +164,25 @@ def insert_data(check_domain,cnames,cnames_ttl,ips,ips_ttl,mal_type):
         )
 
 
+# def fetch_mal_domains():
+#     """
+#     获取待查询的域名列表
+#     """
+#     col = get_col("malicious_domains")
+#     mal_domains = col.find({}, {'_id': 0, 'domain': 1,'typ':1})  # 赌博网站
+#     return [ (i['domain'],i['typ']) for i in mal_domains]
+
+
 def fetch_mal_domains():
-    """
-    获取待查询的域名列表
-    """
-    col = get_col("malicious_domains")
-    mal_domains = col.find({}, {'_id': 0, 'domain': 1,'typ':1})  # 赌博网站
-    return [ (i['domain'],i['typ']) for i in mal_domains]
+
+    mal_domains = []
+    fp = open('mal_domains.txt','r')
+    fp_lines = fp.readlines()
+    for i in fp_lines:
+        domain_type = i.strip().split('\t')
+        mal_domains.append((domain_type[0],domain_type[1]))
+
+    return mal_domains
 
 
 def main():

@@ -18,17 +18,25 @@ import tldextract
 from datetime import datetime
 from process_data.db_manage import get_col
 
-target_col = 'domain_ns_ttl_test'
+target_col = 'domain_ns_ttl_test_white'
 timeout = 5
 server = '222.194.15.253'
 
 col = get_col(target_col)
 
+# def fetch_mal_domains():
+#     """
+#     获取待查询的域名和恶意类型
+#     """
+#     col = get_col("malicious_domains")
+#     mal_domains = col.find({}, {'_id': 0, 'domain': 1,'typ':1})
+#     return [ (i['domain'],i['typ']) for i in mal_domains]
+
 
 def fetch_mal_domains():
 
     mal_domains = []
-    fp = open('mal_domains.txt','r')
+    fp = open('white_domains.txt','r')
     fp_lines = fp.readlines()
     for i in fp_lines:
         domain_type = i.strip().split('\t')
